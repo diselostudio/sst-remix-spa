@@ -1,4 +1,10 @@
-# sst-remix-spa
+<p align="center">
+    <picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/diselostudio/sst-remix-spa/main/public/brand-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/diselostudio/sst-remix-spa/main/public/brand-light.svg">
+  <img alt="Shows Ion and Remix logos." src="https://raw.githubusercontent.com/diselostudio/sst-remix-spa/main/public/brand-dark.svg" width="256">
+</picture>
+</p>
 
 This template extends Remix `remix-run/remix/templates/spa` template with very few tweaks to enable deployments as a Static Site using [SST Ion](https://ion.sst.dev/docs/) (Future SST V3).
 

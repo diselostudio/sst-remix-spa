@@ -10,7 +10,7 @@ export const meta: MetaFunction = () => {
 export default function Index() {
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
-      <h1>Welcome to Remix (SPA Mode)</h1>
+      <img alt="Ion and Remix brand logos" src="/brand-light.svg" width={256} />
       <ul>
         <li>
           <a
@@ -24,6 +24,11 @@ export default function Index() {
         <li>
           <a target="_blank" href="https://remix.run/docs" rel="noreferrer">
             Remix Docs
+          </a>
+        </li>
+        <li>
+          <a target="_blank" href="https://ion.sst.dev/" rel="noreferrer">
+            SST Ion Docs
           </a>
         </li>
       </ul>
