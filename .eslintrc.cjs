@@ -71,6 +71,14 @@ module.exports = {
         "plugin:import/recommended",
         "plugin:import/typescript",
       ],
+      overrides: [
+        {
+          "files": ["sst-env.d.ts", "sst.config.ts"],
+          "rules": {
+            "@typescript-eslint/triple-slash-reference": "warn"
+          }
+        }
+      ]
     },
 
     // Node

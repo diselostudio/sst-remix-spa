@@ -1,47 +1,74 @@
-# templates/spa
+# sst-remix-spa
 
-This template leverages [Remix SPA Mode](https://remix.run/docs/en/main/future/spa-mode) and the [Remix Vite Plugin](https://remix.run/docs/en/main/future/vite) to build your app as a Single-Page Application using [Client Data](https://remix.run/docs/en/main/guides/client-data) for all of your data loads and mutations.
+This template extends Remix `remix-run/remix/templates/spa` template with very few tweaks to enable deployments as a Static Site using [SST Ion](https://ion.sst.dev/docs/) (Future SST V3).
 
-## Setup
-
-```shellscript
-npx create-remix@latest --template remix-run/remix/templates/spa
-```
-
-## Development
-
-You can develop your SPA app just like you would a normal Remix app, via:
-
-```shellscript
-npm run dev
-```
-
-## Production
-
-When you are ready to build a production version of your app, `npm run build` will generate your assets and an `index.html` for the SPA.
-
-```shellscript
-npm run build
-```
-
-### Preview
-
-You can preview the build locally with [vite preview](https://vitejs.dev/guide/cli#vite-preview) to serve all routes via the single `index.html` file:
-
-```shellscript
-npm run preview
-```
-
-> [!IMPORTANT]
+> [!NOTE]
 >
-> `vite preview` is not designed for use as a production server
+> Originally written in `remix-run/remix/templates/spa` README.md:
+>
+> This template leverages [Remix SPA Mode](https://remix.run/docs/en/main/future/spa-mode) and the [Remix Vite Plugin]>(https://remix.run/docs/en/main/future/vite) to build your app as a Single-Page Application using [Client Data](https://>remix.run/docs/en/main/guides/client-data) for all of your data loads and mutations.
 
-### Deployment
+> [!NOTE]
+>
+> Taken from SST Ion docs:
+>
+> Ion is a new engine for deploying [SST](https://sst.dev/) apps. It uses [Pulumi](https://www.pulumi.com/) and [Terraform](https://www.terraform.io/), as opposed to CDK and CloudFormation.
 
-You can then serve your app from any HTTP server of your choosing. The server should be configured to serve multiple paths from a single root `/index.html` file (commonly called "SPA fallback"). Other steps may be required if the server doesn't directly support this functionality.
+## Reasons
 
-For a simple example, you could use [sirv-cli](https://www.npmjs.com/package/sirv-cli):
+As of `05-04-2024` SST's Remix constructor doesn't take into account relatively new Remix SPA mode using Vite as a bundler. When using SPA mode in Remix it outputs a client Static Site on your build not requiring the setup of a Node server or Lamda functions adapter. Therefore, the changes listed below were made to perform a deployment using SST Ion cli.
 
-```shellscript
-npx sirv-cli build/client/ --single
+## Changes applied
+
+At initialization, SST Ion detects your Remix app and wraps your npm/pnpm/yarn command on their own `sst dev` command. Within this process, the required `vite:` prefix was not kept.
+
+```json
+// package.json
+
+"scripts": {
+    "dev": "sst dev remix vite:dev",
+    ...
 ```
+
+Also Remix constructor is replaced with the Static Site constructor deploying the path of the client output.
+
+```javascript
+// sst.config.ts
+
+new sst.aws.StaticSite("RemixSPA", {
+  build: {
+    command: "npm run build",
+    output: "build/client",
+  },
+});
+```
+
+Last, remix-template-spa `.eslintrc.cjs` file extends `@typescript-eslint/recommended` plugin, which throws and error when parsing TypeScript's `///` triple-slash references.
+
+According to `@typescript-eslint/recommended` [documentation](https://typescript-eslint.io/rules/triple-slash-reference/):
+
+> It's rare to need a /// triple-slash reference outside of auto-generated code. If your project is a rare one with one of those use cases, this rule might not be for you.
+
+Since SST auto-generates your infrastructure code types, an override was set for SST files as follows:
+
+```json
+// .eslintrc.cjs
+
+overrides: [
+    {
+        "files": ["sst-env.d.ts", "sst.config.ts"],
+        "rules": {
+            "@typescript-eslint/triple-slash-reference": "warn"
+        }
+    }
+]
+```
+
+## Develop and Deploy
+
+You can follow regular [Remix](https://remix.run/docs/en/main/future/spa-mode#development) or [SST](https://ion.sst.dev/docs/reference/cli/#dev) documented workflows.
+
+### S3 redirection rule
+
+> [!WARNING]
+> This should be the default behavior when deploying a StaticSite but consider reviewing your S3 Bucket hosting configuration in order serve `index.html` file as a fallback when route is not found / any other error.
