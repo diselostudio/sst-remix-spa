@@ -57,7 +57,7 @@ According to `@typescript-eslint/recommended` [documentation](https://typescript
 
 > It's rare to need a /// triple-slash reference outside of auto-generated code. If your project is a rare one with one of those use cases, this rule might not be for you.
 
-Since SST auto-generates your infrastructure code types, an override was set for SST files as follows:
+Since SST auto-generates your infrastructure code types, an override on the rule was set for SST files as follows:
 
 ```jsonc
 // .eslintrc.cjs
