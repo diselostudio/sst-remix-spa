@@ -6,6 +6,8 @@
 </picture>
 </p>
 
+---
+
 This template extends Remix `remix-run/remix/templates/spa` template with very few tweaks to enable deployments as a Static Site using [SST Ion](https://ion.sst.dev/docs/) (Future SST V3).
 
 > [!NOTE]
