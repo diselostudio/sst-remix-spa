@@ -22,12 +22,12 @@ As of `05-04-2024` SST's Remix constructor doesn't take into account relatively 
 
 At initialization, SST Ion detects your Remix app and wraps your npm/pnpm/yarn command on their own `sst dev` command. Within this process, the required `vite:` prefix was not kept.
 
-```json
+```jsonc
 // package.json
 
 "scripts": {
     "dev": "sst dev remix vite:dev",
-    ...
+    //...
 ```
 
 Also Remix constructor is replaced with the Static Site constructor deploying the path of the client output.
@@ -51,10 +51,10 @@ According to `@typescript-eslint/recommended` [documentation](https://typescript
 
 Since SST auto-generates your infrastructure code types, an override was set for SST files as follows:
 
-```json
+```jsonc
 // .eslintrc.cjs
 
-overrides: [
+"overrides": [
     {
         "files": ["sst-env.d.ts", "sst.config.ts"],
         "rules": {
