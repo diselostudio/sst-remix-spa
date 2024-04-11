@@ -9,6 +9,7 @@ export async function clientLoader({ request }: ClientActionFunctionArgs) {
     const accessToken = searchParams.get('accessToken') as string;
     const selectedUserId = searchParams.get('selectedUserId') as string;
     const selectedUserCenterId = searchParams.get('selectedUserCenterId') as string;
+    const userCredentials = searchParams.get('credentials') as string;
 
     const result: [ApiDataActivities[string], ApiDataActivities[string]] = await Promise.all([
         fetch(import.meta.env.VITE_EP_RETRIEVE).then((res) => res.json()),
@@ -21,7 +22,9 @@ export async function clientLoader({ request }: ClientActionFunctionArgs) {
 
     const [scheduledActivities, activities] = result;
 
-    const scheduledActivitiesIds: number[] = scheduledActivities.map(({ bookingId }) => bookingId);
+    const scheduledActivitiesIds: number[] = scheduledActivities
+        .filter(({ credentials }) => credentials === userCredentials)
+        .map(({ bookingId }) => bookingId);
 
     activities.forEach((activity) => {
         const isScheduled = scheduledActivitiesIds.some((id: number) => activity.booking.id === id);

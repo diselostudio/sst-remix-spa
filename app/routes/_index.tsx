@@ -132,13 +132,13 @@ function LoginDialog({
 }
 
 function ActivityPanel() {
-  const { accessToken, user } = useContext(UserContext);
+  const { accessToken, user, credentials } = useContext(UserContext);
   const fetcher = useFetcher<ApiDataActivities>({ key: "activities" });
 
   useEffect(() => {
     if (accessToken) {
       fetcher.load(
-        `/resources/activities?accessToken=${accessToken}&selectedUserId=${user.userId}&selectedUserCenterId=${user.centerId}`
+        `/resources/activities?accessToken=${accessToken}&selectedUserId=${user.userId}&selectedUserCenterId=${user.centerId}&credentials=${credentials}`
       );
     }
   }, [accessToken]);

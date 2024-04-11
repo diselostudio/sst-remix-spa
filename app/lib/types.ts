@@ -22,7 +22,8 @@ export interface ApiDataActivities {
         personId: number;
         booking: Booking;
         state: UserBooking;
-        reschedule: boolean
+        reschedule: boolean;
+        credentials: string;
     }>;
 }
 
