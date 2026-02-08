@@ -45,7 +45,7 @@ async function onTimeSchedule(activity: any) {
 
     const diffInMs = Math.abs(activityTime.getTime() - now.getTime());
     const diffInSeconds = diffInMs / 1000;
-    const diffWithoutADay = diffInSeconds - (35 * 60 * 60);
+    const diffWithoutADay = diffInSeconds - (48 * 60 * 60);
 
 
 
